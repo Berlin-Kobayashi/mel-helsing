@@ -12,6 +12,8 @@ var map;
 var layer;
 var cursors;
 var sprite;
+var jumpButton;
+var jumpTimer = 0;
 
 function create() {
 
@@ -31,15 +33,15 @@ function create() {
 
 	game.physics.enable(sprite);
 
-	sprite.body.bounce.set(0.6);
+	sprite.body.bounce.set(0.2);
 	sprite.body.tilePadding.set(32);
 
 	game.camera.follow(sprite);
 
-	game.physics.arcade.gravity.y = 200;
+	game.physics.arcade.gravity.y = 1000;
 
 	cursors = game.input.keyboard.createCursorKeys();
-
+	jumpButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 }
 
 function update() {
@@ -50,15 +52,6 @@ function update() {
 	// sprite.body.velocity.x = 0;
 	// sprite.body.velocity.y = 0;
 
-	if (cursors.up.isDown)
-	{
-		sprite.body.velocity.y = -150;
-	}
-	else if (cursors.down.isDown)
-	{
-		sprite.body.velocity.y = 150;
-	}
-
 	if (cursors.left.isDown)
 	{
 		sprite.body.velocity.x = -150;
@@ -66,6 +59,12 @@ function update() {
 	else if (cursors.right.isDown)
 	{
 		sprite.body.velocity.x = 150;
+	}
+
+	if (jumpButton.isDown && sprite.body.onFloor() && game.time.now > jumpTimer)
+	{
+		sprite.body.velocity.y = -500;
+		jumpTimer = game.time.now + 750;
 	}
 
 }
