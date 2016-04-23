@@ -55,7 +55,7 @@ function create() {
 
 var frameCounter = 0;
 function update() {
-	if (frameCounter % 3 == 0) {
+	if (frameCounter % 2 == 0) {
 		createTiles();
 	}
 
