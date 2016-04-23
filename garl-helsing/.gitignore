@@ -1,8 +1,0 @@
-.idea/
-.vagrant/
-*.iml
-
-node_modules
-dist/bower_components
-compiled
-dist/config.json

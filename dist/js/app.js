@@ -21,7 +21,7 @@ var facing = 'left';
 function create() {
 
 	game.physics.startSystem(Phaser.Physics.ARCADE);
-	bg = game.add.tileSprite(0, 0, 800, 600, 'background');
+	bg = game.add.tileSprite(0, 0, 2000, 600, 'background');
 
 	map = game.add.tilemap('map');
 	map.addTilesetImage('ground_1x1');
