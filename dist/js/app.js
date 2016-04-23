@@ -30,8 +30,6 @@ function create() {
 
 	map.setCollisionBetween(1, 12);
 
-	// layer.debug = true;
-
 	sprite = game.add.sprite(32, 320, 'dude');
 	game.physics.enable(sprite, Phaser.Physics.ARCADE);
 
@@ -51,6 +49,7 @@ function create() {
 }
 
 function update() {
+	createTiles();
 
 	game.physics.arcade.collide(sprite, layer);
 
@@ -111,4 +110,21 @@ function render() {
 	// game.debug.body(sprite);
 	game.debug.bodyInfo(sprite, 16, 24);
 
+}
+
+var prevX = Math.round(Math.random()*50),
+		prevY = Math.round(Math.random()*20),
+		barLength = 0;
+function createTiles() {
+	var xAxis = Math.round(Math.random()*50);
+	var yAxis = Math.round(Math.random()*20);
+
+	if (barLength < 3) {
+		map.putTile(1, prevX, ++prevY, layer);
+		barLength++;
+	} else {
+		prevX = xAxis;
+		prevY = yAxis;
+		barLength = 0;
+	}
 }
