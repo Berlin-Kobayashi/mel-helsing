@@ -1,4 +1,9 @@
-var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', {
+	preload: preload,
+	create: create,
+	update: update,
+	render: render
+});
 
 function preload() {
 
@@ -48,44 +53,39 @@ function create() {
 	jumpButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 }
 
+var frameCounter = 0;
 function update() {
-	createTiles();
+	if (frameCounter % 3 == 0) {
+		createTiles();
+	}
 
 	game.physics.arcade.collide(sprite, layer);
 
 	//  Un-comment these to gain full control over the sprite
 	sprite.body.velocity.x = 0;
 
-	if (cursors.left.isDown)
-	{
+	if (cursors.left.isDown) {
 		sprite.body.velocity.x = -150;
-		if (facing != 'left')
-		{
+		if (facing != 'left') {
 			sprite.animations.play('left');
 			facing = 'left';
 		}
 	}
-	else if (cursors.right.isDown)
-	{
+	else if (cursors.right.isDown) {
 		sprite.body.velocity.x = 150;
-		if (facing != 'right')
-		{
+		if (facing != 'right') {
 			sprite.animations.play('right');
 			facing = 'right';
 		}
 	}
-	else
-	{
-		if (facing != 'idle')
-		{
+	else {
+		if (facing != 'idle') {
 			sprite.animations.stop();
 
-			if (facing == 'left')
-			{
+			if (facing == 'left') {
 				sprite.frame = 0;
 			}
-			else
-			{
+			else {
 				sprite.frame = 5;
 			}
 
@@ -93,12 +93,12 @@ function update() {
 		}
 	}
 
-	if (jumpButton.isDown && sprite.body.onFloor() && game.time.now > jumpTimer)
-	{
+	if (jumpButton.isDown && sprite.body.onFloor() && game.time.now > jumpTimer) {
 		sprite.body.velocity.y = -500;
 		jumpTimer = game.time.now + 750;
 	}
 
+	frameCounter++;
 }
 
 function render() {
@@ -108,23 +108,31 @@ function render() {
 	// game.debug.spriteBounds(sprite);
 	// game.debug.cameraInfo(game.camera, 32, 32);
 	// game.debug.body(sprite);
-	game.debug.bodyInfo(sprite, 16, 24);
+	//game.debug.bodyInfo(sprite, 16, 24);
 
 }
 
-var prevX = Math.round(Math.random()*50),
-		prevY = Math.round(Math.random()*20),
-		barLength = 0;
+var prevX = Math.round(Math.random() * 50),
+	prevY = Math.round(Math.random() * 20),
+	barLength = 0,
+	horizontalMode = Math.round(Math.random());
 function createTiles() {
-	var xAxis = Math.round(Math.random()*50);
-	var yAxis = Math.round(Math.random()*20);
+	console.log(horizontalMode);
+	var xAxis = Math.round(Math.random() * 50);
+	var yAxis = Math.round(Math.random() * 20);
 
 	if (barLength < 3) {
-		map.putTile(1, prevX, ++prevY, layer);
-		barLength++;
+		if (horizontalMode == 1) {
+			map.putTile(1, ++prevX, prevY, layer);
+			barLength++;
+		} else {
+			map.putTile(1, prevX, ++prevY, layer);
+			barLength++;
+		}
 	} else {
 		prevX = xAxis;
 		prevY = yAxis;
 		barLength = 0;
+		horizontalMode = Math.round(Math.random());
 	}
 }
