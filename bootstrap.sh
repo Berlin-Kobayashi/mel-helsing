@@ -30,6 +30,10 @@ git clone https://github.com/DanShu93/common-command-line-tools.git /home/vagran
 sudo php /home/vagrant/common-command-line-tools/apache2/htaccessEnabler.php
 sudo service apache2 restart
 
+# install node.js 5
+curl -sL https://deb.nodesource.com/setup_5.x | sudo -E bash -
+sudo apt-get install -y nodejs
+
 # install grunt-cli
 sudo npm install -g grunt-cli
 
