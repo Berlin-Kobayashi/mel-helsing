@@ -1,104 +1,82 @@
-var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'game', { preload: preload, create: create, update: update, render: render });
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update, render: render });
 
 function preload() {
 
-	game.load.spritesheet('dude', 'images/dude.png', 32, 48);
-	game.load.image('background', 'images/background2.png');
+	game.load.tilemap('map', 'assets/collision_test.json', null, Phaser.Tilemap.TILED_JSON);
+	game.load.image('ground_1x1', 'assets/ground_1x1.png');
+	game.load.image('phaser', 'assets/phaser-dude.png');
 
 }
 
-var player;
-var facing = 'left';
-var jumpTimer = 0;
+var map;
+var layer;
 var cursors;
-var jumpButton;
-var bg;
+var sprite;
 
 function create() {
 
-	game.physics.startSystem(Phaser.Physics.ARCADE);
+	map = game.add.tilemap('map');
 
-	game.time.desiredFps = 30;
+	map.addTilesetImage('ground_1x1');
 
-	bg = game.add.tileSprite(0, 0, 800, 600, 'background');
+	layer = map.createLayer('Tile Layer 1');
 
-	game.physics.arcade.gravity.y = 250;
+	layer.resizeWorld();
 
-	player = game.add.sprite(32, 32, 'dude');
-	game.physics.enable(player, Phaser.Physics.ARCADE);
+	map.setCollisionBetween(1, 12);
 
-	player.body.bounce.y = 0.2;
-	player.body.collideWorldBounds = true;
-	player.body.setSize(20, 32, 5, 16);
+	// layer.debug = true;
 
-	player.animations.add('left', [0, 1, 2, 3], 10, true);
-	player.animations.add('turn', [4], 20, true);
-	player.animations.add('right', [5, 6, 7, 8], 10, true);
+	sprite = game.add.sprite(260, 70, 'phaser');
+
+	game.physics.enable(sprite);
+
+	sprite.body.bounce.set(0.6);
+	sprite.body.tilePadding.set(32);
+
+	game.camera.follow(sprite);
+
+	game.physics.arcade.gravity.y = 200;
 
 	cursors = game.input.keyboard.createCursorKeys();
-	jumpButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 
 }
 
 function update() {
 
-	// game.physics.arcade.collide(player, layer);
+	game.physics.arcade.collide(sprite, layer);
 
-	player.body.velocity.x = 0;
+	//  Un-comment these to gain full control over the sprite
+	// sprite.body.velocity.x = 0;
+	// sprite.body.velocity.y = 0;
+
+	if (cursors.up.isDown)
+	{
+		sprite.body.velocity.y = -150;
+	}
+	else if (cursors.down.isDown)
+	{
+		sprite.body.velocity.y = 150;
+	}
 
 	if (cursors.left.isDown)
 	{
-		player.body.velocity.x = -150;
-
-		if (facing != 'left')
-		{
-			player.animations.play('left');
-			facing = 'left';
-		}
+		sprite.body.velocity.x = -150;
 	}
 	else if (cursors.right.isDown)
 	{
-		player.body.velocity.x = 150;
-
-		if (facing != 'right')
-		{
-			player.animations.play('right');
-			facing = 'right';
-		}
-	}
-	else
-	{
-		if (facing != 'idle')
-		{
-			player.animations.stop();
-
-			if (facing == 'left')
-			{
-				player.frame = 0;
-			}
-			else
-			{
-				player.frame = 5;
-			}
-
-			facing = 'idle';
-		}
-	}
-
-	if (jumpButton.isDown && player.body.onFloor() && game.time.now > jumpTimer)
-	{
-		player.body.velocity.y = -250;
-		jumpTimer = game.time.now + 750;
+		sprite.body.velocity.x = 150;
 	}
 
 }
 
-function render () {
+function render() {
 
-	game.debug.text(game.time.suggestedFps, 32, 32);
+	//  Useful debug things you can turn on to see what's happening
 
-	// game.debug.text(game.time.physicsElapsed, 32, 32);
-	// game.debug.body(player);
-	// game.debug.bodyInfo(player, 16, 24);
+	// game.debug.spriteBounds(sprite);
+	// game.debug.cameraInfo(game.camera, 32, 32);
+	// game.debug.body(sprite);
+	game.debug.bodyInfo(sprite, 32, 32);
 
 }
