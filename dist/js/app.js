@@ -51,6 +51,7 @@ function create() {
 
 	cursors = game.input.keyboard.createCursorKeys();
 	jumpButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+
 }
 
 var frameCounter = 0;
@@ -117,7 +118,7 @@ var prevX = Math.round(Math.random() * 50),
 	barLength = 0,
 	horizontalMode = Math.round(Math.random());
 function createTiles() {
-	console.log(horizontalMode);
+
 	var xAxis = Math.round(Math.random() * 50);
 	var yAxis = Math.round(Math.random() * 20);
 
@@ -135,4 +136,5 @@ function createTiles() {
 		barLength = 0;
 		horizontalMode = Math.round(Math.random());
 	}
+
 }
