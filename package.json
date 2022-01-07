@@ -5,6 +5,8 @@
   "devDependencies": {
 	"grunt": "~0.4.5",
 	"grunt-bower-task": "^0.4.0",
-	"load-grunt-tasks": "^3.3.0"
+	"load-grunt-tasks": "^3.3.0",
+    "phaser" : "~2.4.0",
+    "jquery" : "~2.1.4"
   }
 }
